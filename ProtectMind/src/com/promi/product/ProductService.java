@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.promi.member.MemberService;
+import com.promi.subscript.SubscriptDAO;
+
 public class ProductService {
 	Scanner s = new Scanner(System.in);
 
@@ -103,8 +106,17 @@ public class ProductService {
 			sum=pro.getProductPrice()*num;
 			System.out.println("총 결제 금액은 "+sum+"원 입니다.");
 		//product에 총액 누적합산
-			ProductDAO.getInstance().TotalProPrice(sum);
-		//	
+			ProductDAO.getInstance().TotalProPrice(sum,MemberService.memberInfo.getConsumerId());
+		//누적갯수에 누적하는 구문
+		
+			if("인센스스틱".equals(pro.getProductKind())) {
+				SubscriptDAO.getInstance().updateInsence(MemberService.memberInfo.getConsumerId());
+			}else if ("차".equals(pro.getProductKind())) {
+				SubscriptDAO.getInstance().updateInsence(MemberService.memberInfo.getConsumerId());
+			}else if ("필로우미스트".equals(pro.getProductKind())) {
+				SubscriptDAO.getInstance().updateInsence(MemberService.memberInfo.getConsumerId());
+			}
+		
 			
 			
 			

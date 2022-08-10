@@ -30,6 +30,7 @@ public class MemberService {
 
 	// 로그인용
 	public void doLogin() {
+	
 		try {
 			Member mem =null;
 			System.out.println("로그인을 시도합니다.");

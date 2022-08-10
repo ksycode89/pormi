@@ -147,14 +147,15 @@ public class ProductDAO extends DAO {
 	}
 	//구매기능//
 	//구매 : product에 합산시키기//
-	public int TotalProPrice(int total) {
+	public int TotalProPrice(int total,String id) {
 		int result =0;
 		
 		try {
 			conn();
-			String sql = "update  member set  total_spend = product_totalm+?";
+			String sql = "update  member set  total_spend = total_spend+? where consumer_id=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, total);
+			pstmt.setString(2, id);
 			result = pstmt.executeUpdate();
 
 		} catch (Exception e) {

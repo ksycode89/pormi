@@ -59,4 +59,28 @@ public class SubscriptDAO extends DAO {
 		return result;
 	}
 	
+	//항목늘리기
+	public int updateInsence(String id) {
+		int result = 0;
+		
+		try {
+			conn();
+			String sql = "update subscript set incense_n =incense_n+1  where consumer_id =?";
+			pstmt=conn.prepareStatement(sql);
+//			pstmt.setInt(1, incense);
+			pstmt.setString(1, id);
+			result =pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		
+		
+		return result;
+	}
+	
+	
+	
 }
