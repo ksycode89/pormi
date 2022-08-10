@@ -51,7 +51,7 @@ public class ProductService {
 		}
 
 	}
-
+//상품목록
 	public void listProduck() {
 		int num = 0;
 
@@ -87,8 +87,37 @@ public class ProductService {
 
 	}
 
+
+//	총 판매목록(누적),일반구매
+	public void buyProduct() {
+		System.out.println("구입할 상품의 명과 수량을 입력해주세요.");
+		System.out.print("상품명 :");
+		String name = s.nextLine();
+		System.out.print("갯수 :");
+		int num = Integer.parseInt(s.nextLine());
+		int sum =0;
+		Product pro = ProductDAO.getInstance().buyList(name);
+		if(pro.getProductName().equals(name)) {
+			System.out.println("구매하는 물품은 "+pro.getProductName()+"이며"
+					+ " 수량은 "+num+"입니다.");
+			sum=pro.getProductPrice()*num;
+			System.out.println("총 결제 금액은 "+sum+"원 입니다.");
+		//product에 총액 누적합산
+			ProductDAO.getInstance().TotalProPrice(sum);
+		//	
+			
+			
+			
+		}else {System.out.println("올바른 상품명을 입력해 주세요.");}
+		
+		
+		
+		
+		
+	}
+
 }
-//	총 판매목록(누적),
+
 //	(재고체크 ),
 //	회원조회(아이디, 구독정보,구매정보)
 //	리뷰(확인,삭제) 	

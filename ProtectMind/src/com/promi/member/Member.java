@@ -20,9 +20,18 @@ public class Member {
 	private Date subDay;
 	private int delivery;
 	private int totlaSpend;
+	private Date checkDate;
 
 
 
+
+	public Date getCheckDate() {
+		return checkDate;
+	}
+
+	public void setCheckDate(Date checkDate) {
+		this.checkDate = checkDate;
+	}
 
 	public Member() {
 		

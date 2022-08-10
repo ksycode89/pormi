@@ -95,7 +95,7 @@ public class ProductDAO extends DAO {
 			conn();
 			String sql = "select *from product where product_name = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
+			pstmt.setString(1, "%"+name+"%");
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				pro = new Product();
@@ -116,4 +116,62 @@ public class ProductDAO extends DAO {
 		return list;
 
 	}
+	
+	public Product buyList(String name) {
+		
+		Product pro = null;
+		try {
+			conn();
+			String sql = "select *from product where product_name = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				pro = new Product();
+				pro.setProductName(rs.getString("product_name"));
+				pro.setProductPrice(rs.getInt("product_price"));
+				pro.setProductKind(rs.getNString("product_kind"));
+				pro.setProductGrade(rs.getInt("product_grade"));
+				pro.setProductExplain(rs.getString("product_explain"));
+				pro.setProductTotalM(rs.getInt("product_totalm"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+		return pro;
+
+	}
+	//구매기능//
+	//구매 : product에 합산시키기//
+	public int TotalProPrice(int total) {
+		int result =0;
+		
+		try {
+			conn();
+			String sql = "update  member set  total_spend = product_totalm+?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, total);
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+
+		} finally {
+			disconnect();
+		}
+
+		
+		
+		return result;
+		
+		
+	}
+	
+	
+	
+	
+	
 }

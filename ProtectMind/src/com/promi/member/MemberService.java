@@ -3,9 +3,13 @@ package com.promi.member;
 import java.util.List;
 import java.util.Scanner;
 
+import com.promi.subscript.Subscript;
+import com.promi.subscript.SubscriptDAO;
+
 public class MemberService {
 	Scanner s = new Scanner(System.in);
-
+	//로그인 정보 저장
+	public static Member memberInfo = null;
 //가입
 	public void insertShip() {
 		Member member = new Member();
@@ -19,28 +23,29 @@ public class MemberService {
 		member.setConsumerId(id);
 		member.setConsumerPw(pw);
 		member.setConsumerName(name);
-
 		MemberDAO.getInstance().insertShip(member);
+		SubscriptDAO.getInstance().newSub(id);
 
 	}
 
 	// 로그인용
 	public void doLogin() {
 		try {
-
+			Member mem =null;
 			System.out.println("로그인을 시도합니다.");
 			System.out.println("아이디");
 			String id = s.nextLine();
 			System.out.println("패스워드");
 			String pw = s.nextLine();
 
-			MemberDAO.getInstance().login(id);
+			mem=MemberDAO.getInstance().login(id);
 
 			if (MemberDAO.getInstance().login(id).getConsumerPw().equals(pw)) {
 				if (MemberDAO.getInstance().login(id).getRoles() == 1) {
 					System.out.println("관리자로 로그인 합니다.");
 				}
 				System.out.println("로그인 성공");
+				memberInfo = mem;//로그인 정보 넣기
 			} else {
 				System.out.println("로그인 실패");
 			}
