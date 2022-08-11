@@ -23,7 +23,7 @@ public class MemberDAO extends DAO {
 		Member mem = null;
 		try {
 			conn();
-			String sql = "select * from member where consumer_id=?";
+			String sql = "select * from member where consumer_id=? ";
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			
@@ -69,6 +69,26 @@ public class MemberDAO extends DAO {
 
 		return result;
 	}
+	//계정삭제
+	public int deletemember(String id) {
+		int result = 0;
+		try {
+			conn();
+			String sql = "delete member where consumer_id=? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+
+		} finally {
+			disconnect();
+		}
+
+		return result;
+	}
+	
+	
 	
 	//배달업데이트(완료)//
 	public int updateDelivery(String id) {
@@ -112,6 +132,28 @@ public class MemberDAO extends DAO {
 		
 		return result;
 	}
+	//상품구매시 1->2
+	public int updateDeliveryOrder(String id) {
+		int result =0;
+		try {
+			conn();
+			String sql = "update member set delivery = ? where consumer_id =?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, 1);
+			pstmt.setString(2, id);
+			result =pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		
+		
+		
+		return result;
+	}
+	
 	//상품구매//
 	
 	

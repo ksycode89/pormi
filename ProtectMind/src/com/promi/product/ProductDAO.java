@@ -93,7 +93,7 @@ public class ProductDAO extends DAO {
 		Product pro = null;
 		try {
 			conn();
-			String sql = "select *from product where product_name = ?";
+			String sql = "select *from product where product_name like ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, "%"+name+"%");
 			rs = pstmt.executeQuery();
@@ -146,11 +146,12 @@ public class ProductDAO extends DAO {
 
 	}
 	//구매기능//
-	//구매 : product에 합산시키기//
-	public int TotalProPrice(int total,String id) {
+	//구매 : member에 판매값 합산시키기//
+	public int TotalMemPrice(int total,String id) {
 		int result =0;
 		
 		try {
+			
 			conn();
 			String sql = "update  member set  total_spend = total_spend+? where consumer_id=?";
 			pstmt = conn.prepareStatement(sql);
@@ -170,9 +171,54 @@ public class ProductDAO extends DAO {
 		
 		
 	}
-	
-	
-	
+	//pro에 총 판매수 누적
+	public int TotalProNum(int total,String name) {
+		int result =0;
+		
+		try {
+			conn();
+			String sql = "update  product set  product_totalm	 = product_totalm+? where product_name=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, total);
+			pstmt.setString(2, name);
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+
+		} finally {
+			disconnect();
+		}
+
+		
+		
+		return result;
+		
+		
+	}
+	//v판매액 누적 
+	public int TotalProMoney(int total,String name) {
+		int result =0;
+		
+		try {
+			conn();
+			String sql = "update  product set  total_money	 = total_money+? where product_name=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, total);
+			pstmt.setString(2, name);
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+
+		} finally {
+			disconnect();
+		}
+
+		
+		
+		return result;
+		
+		
+	}
 	
 	
 }

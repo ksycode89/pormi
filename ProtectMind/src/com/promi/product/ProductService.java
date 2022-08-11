@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.promi.member.MemberDAO;
 import com.promi.member.MemberService;
 import com.promi.subscript.SubscriptDAO;
 
@@ -54,6 +55,7 @@ public class ProductService {
 		}
 
 	}
+
 //상품목록
 	public void listProduck() {
 		int num = 0;
@@ -77,19 +79,19 @@ public class ProductService {
 		System.out.println("검색할 상품");
 		String name = s.nextLine();
 		List<Product> list = ProductDAO.getInstance().listProduckName(name);
-		System.out.println("==========================");
+		System.out.println("================================================================================");
 		System.out.println("[" + name + "]정보");
-		System.out.println("==========================");
+		System.out.println("================================================================================");
 
 		for (Product pro : list) {
-//			System.out.println(num+". 제품명 : "+pro.getProductName()+" | 제품 가격 : "+pro.getProductPrice()+"| 제품 종류 : "+pro.getProductKind()+ " |");		
-			System.out.println(pro);
+//			System.out.println("["+num+"]");
+//			System.out.println("제품명 : "+pro.getProductName()+" | 제품 가격 : "+pro.getProductPrice()+"| 제품 종류 : "+pro.getProductKind()+ " |");		
+			System.out.println(num + "." + pro);
 			num++;
+			System.out.println("==============================================================================");
 		}
-		System.out.println("==========================");
 
 	}
-
 
 //	총 판매목록(누적),일반구매
 	public void buyProduct() {
@@ -98,34 +100,48 @@ public class ProductService {
 		String name = s.nextLine();
 		System.out.print("갯수 :");
 		int num = Integer.parseInt(s.nextLine());
-		int sum =0;
+		int sum = 0;
 		Product pro = ProductDAO.getInstance().buyList(name);
-		if(pro.getProductName().equals(name)) {
-			System.out.println("구매하는 물품은 "+pro.getProductName()+"이며"
-					+ " 수량은 "+num+"입니다.");
-			sum=pro.getProductPrice()*num;
-			System.out.println("총 결제 금액은 "+sum+"원 입니다.");
-		//product에 총액 누적합산
-			ProductDAO.getInstance().TotalProPrice(sum,MemberService.memberInfo.getConsumerId());
-		//누적갯수에 누적하는 구문
-		
-			if("인센스스틱".equals(pro.getProductKind())) {
-				SubscriptDAO.getInstance().updateInsence(MemberService.memberInfo.getConsumerId());
-			}else if ("차".equals(pro.getProductKind())) {
-				SubscriptDAO.getInstance().updateInsence(MemberService.memberInfo.getConsumerId());
-			}else if ("필로우미스트".equals(pro.getProductKind())) {
-				SubscriptDAO.getInstance().updateInsence(MemberService.memberInfo.getConsumerId());
-			}
-		
-			
-			
-			
-		}else {System.out.println("올바른 상품명을 입력해 주세요.");}
-		
-		
-		
-		
-		
+		if (pro.getProductName().equals(name)) {
+			System.out.println("구매하는 물품은 " + pro.getProductName() + "이며" + " 수량은 " + num + "입니다.");
+			sum = pro.getProductPrice() * num;
+			System.out.println("총 결제 금액은 " + sum + "원 입니다.");
+			System.out.println("결제를 시작합니다.");
+			System.out.println("비밀번호를 입력해주세요");
+			String pw = s.nextLine();
+			if (MemberService.memberInfo.getConsumerPw().equals(pw)) {
+				
+				int result = MemberDAO.getInstance().updateDeliveryOrder(MemberService.memberInfo.getConsumerId());
+				if (result == 1) {
+					System.out.println("주문완료");
+					// product에 총액 누적합산
+					ProductDAO.getInstance().TotalMemPrice(sum, MemberService.memberInfo.getConsumerId());
+					// 상품 제품 누적 부분
+					SubscriptDAO.getInstance().updateInsence(pro.getProductName(), num, sum,
+							MemberService.memberInfo.getConsumerId());
+					// 배달 0-1로 번경 구문
+					// product 에 판매수 누적
+					ProductDAO.getInstance().TotalProNum(num, name);
+					//product에 판매 액누적 
+					ProductDAO.getInstance().TotalProMoney(sum,name);
+				} else {
+					System.out.println("주문 실패");
+				}
+
+//			if("인센스스틱".equals(pro.getProductKind())) {
+//				SubscriptDAO.getInstance().updateInsence(MemberService.memberInfo.getConsumerId());
+//			}else if ("차".equals(pro.getProductKind())) {
+//				SubscriptDAO.getInstance().updateInsence(MemberService.memberInfo.getConsumerId());
+//			}else if ("필로우미스트".equals(pro.getProductKind())) {
+//				SubscriptDAO.getInstance().updateInsence(MemberService.memberInfo.getConsumerId());
+//			}
+
+			}else {System.out.println("잘못된 비밀 번호입니다.");}
+
+		} else {
+			System.out.println("올바른 상품명을 입력해 주세요.");
+		}
+
 	}
 
 }
