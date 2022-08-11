@@ -10,10 +10,30 @@ public class Event {
 	 private String eventContents;
 	 private Date eventDay;
 	 private String consumerId;
+	 private int roles;
+	 
+	 public Event() {
+		 
+	 }
 	 
 	 
 	 
-	 public int getCount() {
+	 
+	 public int getRoles() {
+		return roles;
+	}
+
+
+
+
+	public void setRoles(int roles) {
+		this.roles = roles;
+	}
+
+
+
+
+	public int getCount() {
 		return count;
 	}
 
@@ -23,11 +43,7 @@ public class Event {
 	}
 
 
-	public static int lsatNum=1;
 
-	 public Event() {
-		
-	}
 	 
 	
 	public int getGrade() {
@@ -90,14 +106,7 @@ public class Event {
 	}
 
 
-	public static int getLsatNum() {
-		return lsatNum;
-	}
 
-
-	public static void setLsatNum(int lsatNum) {
-		Event.lsatNum = lsatNum;
-	}
 
 
 	@Override

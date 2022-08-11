@@ -10,6 +10,15 @@ public class Subscript {
 	private Date buyDate;
 	private int delivery;
 	private int orderNumber;
+	private int review;
+
+	public int getReview() {
+		return review;
+	}
+
+	public void setReview(int review) {
+		this.review = review;
+	}
 
 	public Subscript() {
 
@@ -73,10 +82,12 @@ public class Subscript {
 		this.delivery = delivery;
 	}
 
+//	String.format("%-4d", e.getEventNum())
 	@Override
 	public String toString() {
-		return "주문번호 : "+orderNumber +"\n상품명  : " + productsName + ", 구매 갯수 : " + productNum + ", 구매 가격 : " + productSpend + ", 구매일 : "
-				+ buyDate + "]";
+		return String.format("%-6d", orderNumber)+String.format("%-15s", productsName)+String.format("%-6d", productNum)
+		+String.format("%-8d", productSpend)+String.format("%-4s",buyDate);
 	}
-
+//	"주문번호 : "+orderNumber +"\n상품명  : " + productsName + ", 구매 갯수 : " + productNum + ", 구매 가격 : " + productSpend + ", 구매일 : "
+//	+ buyDate + "]";
 }

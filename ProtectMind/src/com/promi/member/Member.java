@@ -110,7 +110,7 @@ public class Member {
 			roless="관리자";
 		}else {roless="일반 회원";}
 		return "회원id : " + consumerId + " | 회원 비밀번호 : " + "*&"+i+"^@"+i + " | 회원 이름 : " + consumerName
-				+ " | 판매내역 : " + sellList + " | 회원 구분 : " + roless + " | 구독일자 : " + subDay;
+				+" | 회원 구분 : " + roless ;
 	}
 	
 	

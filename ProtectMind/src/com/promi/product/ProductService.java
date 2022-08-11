@@ -80,7 +80,7 @@ public class ProductService {
 		String name = s.nextLine();
 		List<Product> list = ProductDAO.getInstance().listProduckName(name);
 		System.out.println("================================================================================");
-		System.out.println("[" + name + "]정보");
+		System.out.println("[검색 결과]");
 		System.out.println("================================================================================");
 
 		for (Product pro : list) {

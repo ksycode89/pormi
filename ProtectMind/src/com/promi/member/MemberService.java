@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
+import com.promi.event.Event;
+import com.promi.event.EventDAO;
 import com.promi.subscript.Subscript;
 import com.promi.subscript.SubscriptDAO;
 
@@ -105,13 +109,19 @@ public class MemberService {
 		String select = s.nextLine();
 		if (select.equals("1")) {
 			Member mem = MemberDAO.getInstance().login(MemberService.memberInfo.getConsumerId());
-			System.out.println(mem.toString());
+			System.out.print(mem.toString());
+			if(mem.getSubDay()==null) {
+				System.out.println(" | 구독내역이 없습니다.");
+			}else {System.out.println(" | 구독만료일 : "+mem.getSubDay());}
 
 		} else if (select.equals("2")) {
 			list = SubscriptDAO.getInstance().getBuyList(MemberService.memberInfo.getConsumerId());
 			System.out.println("=== 구매목록을 출력합니다 ===");
+			System.out.println("구매번호     상품명      상품개수    구매액      구매일");
 			for (Subscript sub : list) {
-				System.out.println(num + " : " + sub);
+				System.out.println("===================================================");
+				System.out.println(sub);
+				System.out.println("===================================================");
 				num++;
 			}
 
@@ -181,11 +191,7 @@ public class MemberService {
 				List<Subscript> list = SubscriptDAO.getInstance().getDeliverList(id);
 				Subscript sub = null;
 				// 로그인에 해당하는 총 구매 목록 불러오기
-			for(Subscript s : list) {
-				System.out.println(s.getConsumerId());
-				System.out.println(s.getDelivery());
-				
-			}
+			
 				
 				System.out.println("배달 중인 상품");
 				System.out.println("================================================================");
@@ -254,7 +260,7 @@ public class MemberService {
 
 	// 배송 구매자//
 	public void deliveryMem() {
-		System.out.println("1.배달 조회 2.구매 확정 3.배송완료상품");
+		System.out.println("1.배달 조회 2.구매 확정 3.상품평가하기 ");
 		String num = s.nextLine();
 		String id = MemberService.memberInfo.getConsumerId();
 		// 로그인에 해당하는 총 구매 목록 불러오기
@@ -266,14 +272,15 @@ public class MemberService {
 
 			if (num.equals("1")) {
 
+				System.out.println("구매번호     상품명      상품개수    구매액      구매일");
 				for (Subscript s : list) {
 					if (s.getDelivery() > 0) {
 						if (s.getDelivery() == 1) {
-							System.out.println("배송중인 상품");
+							System.out.println("[배송중인 상품]");
 							System.out.println(s);
 						}
 						if (s.getDelivery() == 2) {
-							System.out.println("배송완료된 상품");
+							System.out.println("[배송완료된 상품]");
 							System.out.println(s);
 
 						}
@@ -283,30 +290,101 @@ public class MemberService {
 				System.out.println();
 				// 배달완료시 배달끝내기 (0으로만들기)-나중에 돈받아오기
 			} else if (num.equals("2")) {
-
+				System.out.println("[구매확정 목록]");
+				System.out.println("구매번호     상품명      상품개수    구매액      구매일");
 				for (Subscript s : list) {
-					if (s.getDelivery() > 0) {
+					
 						if (s.getDelivery() == 2) {
-							System.out.println("배송중인 상품");
 							System.out.println(s);
 						}
-
-					}
 				}
-
-			} else if (num.equals("3")) {
-
-				for (Subscript a : list) {
-
-					System.out.println("====배송완료 상품====");
-					System.out.println(a.getDelivery());
-
+				System.out.println("구매확정할 상품번호를 입력해주세요.");
+				int pnum=Integer.parseInt(s.nextLine());
+				int result = SubscriptDAO.getInstance().setDeliverMem(pnum);
+				if(result==1) {
+				System.out.println("구매확정이 되었습니다.");
+				System.out.println("리뷰 또는 평점을 남기시려면 아무키나 입력해주십시오 (남기지 않겠다 sksmsajdcjddl를 입력해주세요.)");
+				String a = s.nextLine();
+				if("sksmsajdcjddl".equals(a)) {
+					System.out.println("리뷰를 취소합니다.");
+				}else {
+					review();
 				}
-
+				
+				}else {System.out.println("구매확정에 실패하였습니다.");}
+			}else if (num.equals("3")){
+				review();
+				;
 			}
+
+	
 		} catch (Exception e) {
 			System.out.println("회원 아이디가 잘못되었습니다.");
 		}
 	}
+	
+	public void review() {
+		System.out.println("리뷰와 평점");
+//		int num =Integer.parseInt(s.nextLine());
+		
+			
+	
+			String id = MemberService.memberInfo.getConsumerId();
+			// 로그인에 해당하는 총 구매 목록 불러오기
+			List<Subscript> list = SubscriptDAO.getInstance().getDeliverList(id);
+			Subscript sub = null;
+			//목차뽑기
+			for (Subscript s : list) {
+				if(s.getDelivery()==0 ||s.getDelivery()==2) {
+			if (s.getReview()==0) {
+				System.out.println("[리뷰 가능 상품]");
+				System.out.println("================================================================");
+				System.out.println("구매번호     상품명      상품개수    구매액      구매일");
+				if(s.getReview()==0) {
+				System.out.println(s);
+				}
+			}
+				}	
+		}
+		System.out.println("평점과 리뷰를 남기실 구매번호를 입력해주세요.");
+		int num2 =Integer.parseInt(s.nextLine());
+		System.out.println("평점을 입력해주세요 (1~5)");
+		int socre =Integer.parseInt(s.nextLine());
+		int result =SubscriptDAO.getInstance().review(socre, num2);
+		Subscript sub2 = SubscriptDAO.getInstance().getDeliver(num2)	;
+			//리뷰작성
+		writeBoardEvent(sub2.getProductsName());	
+		
+	}
+	//리뷰작성 메서드
+	public void writeBoardEvent(String name) {
+		Event event = new Event();
+
+		System.out.println("리뷰를 작성을 시작합니다.");
+		System.out.println("==============================");
+		System.out.print("글의 제목을 입력하세요 >");
+		String title = s.nextLine();
+		System.out.println("==============================");
+		System.out.println("글의 내용을 입력하세요.");
+		String contents = s.nextLine();
+		System.out.println("==============================");
+
+		event.setEventTitle("["+name+"]"+title);
+		event.setEventContents(contents);
+//		event.setEventNum(Event.lsatNum);
+		// 아이디
+		String id = MemberService.memberInfo.getConsumerId();
+
+		int result = EventDAO.getInstance().writeBoardEvnet(event, id);
+		if (result == 1) {
+			System.out.println("작성완료");
+
+		} else {
+			System.out.println("작성 실패");
+		}
+
+	}
+	
+
 
 }
