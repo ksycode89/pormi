@@ -79,7 +79,7 @@ public class MemberService {
 		String id = s.nextLine();
 		// 구독남은 일 수 확인
 		if (MemberDAO.getInstance().login(id).getDelivery() != 0) {
-			System.out.println(MemberDAO.getInstance().login(id).getDelivery() + "주 남았습니다. 정말로 삭제하시겠습니까?");
+			System.out.println(MemberDAO.getInstance().login(id).getSubDay() + "까지 남아있습니다. 정말로 삭제하시겠습니까?");
 		}
 		// 회원 확인 부분 //
 		System.out.println("==========삭제 회원의 정보 ===========");
@@ -102,10 +102,12 @@ public class MemberService {
 
 	// 정보조회//
 	public void detailInfo() {
+		boolean a= true;
+		while(true) {
 		List<Subscript> list = new ArrayList<>();
 		int num = 0;
 		System.out.println(MemberService.memberInfo.getConsumerName() + "님의 정보를 조회합니다.");
-		System.out.println("1.상세조회 2.구매목록 3.계정삭제");
+		System.out.println("1.상세조회 2.구매목록 3.계정삭제 4.종료");
 		String select = s.nextLine();
 		if (select.equals("1")) {
 			Member mem = MemberDAO.getInstance().login(MemberService.memberInfo.getConsumerId());
@@ -127,10 +129,11 @@ public class MemberService {
 
 		} else if (select.equals("3")) {
 			deletememberC(); // 아래 삭제 메서드
-		} else {
-			System.out.println("입력값이 잘못 되었습니다.");
-		}
-
+		} else  if(select.equals("4")){
+			System.out.println("메인메뉴로 나갑니다.");
+			break;
+		}else {System.out.println("입력값 오류");}
+	}
 	}
 
 	// 맴버 회원 탈퇴 구문//

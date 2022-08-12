@@ -34,8 +34,9 @@ public class MemberDAO extends DAO {
 				mem.setConsumerPw(rs.getNString("consumer_pw"));
 				mem.setConsumerName(rs.getNString("consumer_name"));
 				mem.setRoles(rs.getInt("roles"));
-				mem.setSubDay(rs.getDate("sub_day"));
+				mem.setSubDay(rs.getString("sub_day"));
 				mem.setDelivery(rs.getInt("delivery"));
+				mem.settest_sub(rs.getInt("test_sub"));
 			}
 			
 		} catch (Exception e) {
@@ -154,7 +155,28 @@ public class MemberDAO extends DAO {
 		return result;
 	}
 	
-	//상품구매//
+	//구독종료//
+	public int subEnd(Member mem) {
+		int result =0;
+		try {
+			conn();
+			String sql = "update member set sub_day = null,test_sub=0 where consumer_id =?";
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, mem.getConsumerId());
+			result =pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		
+		
+		
+		return result;
+		
+	}
 	
 	
 ///회원조회 ///

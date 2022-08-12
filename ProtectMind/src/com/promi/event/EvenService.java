@@ -250,9 +250,9 @@ public class EvenService {
 			int num2 = Integer.parseInt(s.nextLine());
 		System.out.println(EventDAO.getInstance().readEventR(num2)); 	
 		
-		System.out.println(1);
+	
 		String id = EventDAO.getInstance().readEventR(num2).getConsumerId();
-			System.out.println(2);
+		
 			if (consumerid.equals(id)) {
 				//내글인지 체크 구문 but 목록에 안뜸
 				int result = EventDAO.getInstance().deleteBoardR(num2);

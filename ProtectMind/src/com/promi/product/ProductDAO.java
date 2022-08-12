@@ -1,9 +1,13 @@
 package com.promi.product;
 
+import java.security.AlgorithmParametersSpi;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.promi.common.DAO;
+import com.promi.member.Member;
+import com.promi.subscript.Subscript;
 
 public class ProductDAO extends DAO {
 
@@ -52,7 +56,7 @@ public class ProductDAO extends DAO {
 			result = pstmt.executeUpdate();
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
@@ -160,7 +164,7 @@ public class ProductDAO extends DAO {
 			result = pstmt.executeUpdate();
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
@@ -184,7 +188,7 @@ public class ProductDAO extends DAO {
 			result = pstmt.executeUpdate();
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
@@ -208,7 +212,7 @@ public class ProductDAO extends DAO {
 			result = pstmt.executeUpdate();
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
@@ -219,6 +223,124 @@ public class ProductDAO extends DAO {
 		
 		
 	}
+	//구독
+	public int subDay(int time,Member mem) {
+		int result =0;
+		
+		try {
+			conn();
+			String sql = "update  member set  test_sub =? where consumer_id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, time);
+			pstmt.setString(2,mem.getConsumerId() );
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+		e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+		
+		
+		return result;
+		
+		
+	}
+//실제출력구문 구독 일주일
+	public int subDayReal(String time,Member mem) {
+		int result =0;
+		
+		try {
+			conn();
+			String sql = "update  member set  sub_day =? where consumer_id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, time);
+			pstmt.setString(2,mem.getConsumerId() );
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+		e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+		
+		
+		return result;
+		
+		
+	}
+	//일주일추가
+	public int subDayRealWeek(Member mem) {
+		int result =0;
+		
+		try {
+			conn();
+			String sql = "update  member set  sub_day =sub_day+7 where consumer_id=?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1,mem.getConsumerId() );
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+		e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+		
+		
+		return result;
+		
+		
+	}
+	//g한달추가//
+	public int subDayRealMonth(Member mem) {
+		int result =0;
+		
+		try {
+			conn();
+			String sql = "update  member set  sub_day =sub_day+28 where consumer_id=?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1,mem.getConsumerId() );
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+		e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+		
+		
+		return result;
+		
+		
+	}
+public int avgGrade(String name) {
+		
+	int sub = 0;
 	
+	try {
+			conn();
+			String sql = "select avg(review_c) from subscript where  products_name = ? and  review_c>0 ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				sub = rs.getInt("avg(review_c)");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+		return sub;
+
+	}
 	
 }

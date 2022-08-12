@@ -1,4 +1,7 @@
 package com.promi.product;
+
+import java.awt.color.ProfileDataException;
+
 //1.name
 //2.prise
 //3.kind
@@ -68,7 +71,7 @@ public class Product {
 	@Override
 	public String toString() {
 		return "제품명  : " + productName + " | 제품가격 : " + ProductPrice + " | 제품종류 : " + productKind
-				+ " | 제품 평점 : " + productGrade + "|\n제품설명 : " + productExplain ;
+				 + "|\n제품설명 : " + productExplain ;
 	}
 	
 	

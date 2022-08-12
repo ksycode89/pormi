@@ -15,9 +15,9 @@ public class Member {
 	private String consumerId;
 	private String consumerPw;
 	private String consumerName;
-	private String sellList;
+	private int test_sub;
 	private int roles;
-	private Date subDay;
+	private String subDay;
 	private int delivery;
 	private int totlaSpend;
 	private Date checkDate;
@@ -78,12 +78,12 @@ public class Member {
 		this.consumerName = consumerName;
 	}
 
-	public String getSellList() {
-		return sellList;
+	public int gettest_sub() {
+		return test_sub;
 	}
 
-	public void setSellList(String sellList) {
-		this.sellList = sellList;
+	public void settest_sub(int test_sub) {
+		this.test_sub = test_sub;
 	}
 
 	public int getRoles() {
@@ -94,11 +94,11 @@ public class Member {
 		this.roles = roles;
 	}
 
-	public Date getSubDay() {
+	public String getSubDay() {
 		return subDay;
 	}
 
-	public void setSubDay(Date subDay) {
+	public void setSubDay(String subDay) {
 		this.subDay = subDay;
 	}
 	
