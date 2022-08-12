@@ -3,6 +3,7 @@ package com.promi.exe;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 
 import com.promi.event.EvenService;
@@ -156,7 +157,7 @@ public class Application {
 				System.out.println("=====================================");
 				System.out.println("=====================================");
 				System.out.println("=====================================");
-				System.out.println("===  다음주 한주 잘보내시고 다담주에 뵈요  ===");
+				t();
 				System.out.println("=====================================");
 				System.out.println("=====================================");
 				System.out.println("=====================================");
@@ -170,6 +171,19 @@ public class Application {
 		}
 	}
 
+	public void t () {
+		String str="다음주 한주 잘보내시고 다담주에 뵈요";
+		String[] strArray = str.split("");
+		try {
+			for (int i = 0; i < strArray.length; i++) {
+				TimeUnit.SECONDS.sleep(1);
+				System.out.print(strArray[i]);
+			}
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	
 	/// 일반//
 	private void run2() {
 		boolean run = true;
